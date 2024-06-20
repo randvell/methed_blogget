@@ -1,0 +1,33 @@
+import DeleteButton from './DeleteButton';
+import style from './Content.module.css';
+import PropTypes from 'prop-types';
+import Text from '../../../../../UI/Text';
+
+export const Content = ({className, postData}) => {
+  const {title, author} = postData;
+
+  return (
+    <div className={className}>
+      <Text As="h2" className={style.title}>
+        <Text As="a" size={18} tsize={24} className={style.linkPost} href="#">
+          {title}
+        </Text>
+      </Text>
+      <Text
+        As="a"
+        size={12}
+        tsize={14}
+        className={style.linkAuthor}
+        href="#author"
+      >
+        {author}
+      </Text>
+      <DeleteButton />
+    </div>
+  );
+};
+
+Content.propTypes = {
+  className: PropTypes.string,
+  postData: PropTypes.object,
+};

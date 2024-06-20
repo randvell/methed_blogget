@@ -1,8 +1,8 @@
 import style from './Post.module.css';
-import PostBody from './PostBody';
-import PostDate from './PostDate';
-import PostImg from './PostImg';
-import PostRating from './PostRating';
+import Body from './Content';
+import Date from './Date';
+import Img from './Img';
+import Rating from './Rating';
 import PropTypes from 'prop-types';
 
 export const Post = ({postData}) => {
@@ -10,10 +10,10 @@ export const Post = ({postData}) => {
 
   return (
     <li className={style.post}>
-      <PostImg className={style.img} postData={postData} />
-      <PostBody className={style.content} postData={postData} />
-      <PostRating className={style.rating} ups={ups} />
-      <PostDate className={style.date} date={date} />
+      <Img className={style.img} postData={postData} />
+      <Body className={style.content} postData={postData} />
+      <Rating className={style.rating} ups={ups} />
+      <Date className={style.date} date={date} />
     </li>
   );
 };
