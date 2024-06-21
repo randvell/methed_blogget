@@ -9,6 +9,5 @@ export const Date = ({date}) => (
 );
 
 Date.propTypes = {
-  className: PropTypes.string,
   date: PropTypes.string,
 };

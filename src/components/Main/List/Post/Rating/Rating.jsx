@@ -11,5 +11,4 @@ export const Rating = ({ups}) => (
 
 Rating.propTypes = {
   ups: PropTypes.number,
-  className: PropTypes.string,
 };

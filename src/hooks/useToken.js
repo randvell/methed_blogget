@@ -23,5 +23,9 @@ export const useToken = (initialState) => {
     }
   }, [token]);
 
-  return [token, setToken];
+  const revokeToken = () => {
+    setToken('');
+  };
+
+  return {token, revokeToken};
 };

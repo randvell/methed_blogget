@@ -1,7 +1,7 @@
 import style from './Post.module.css';
 import Body from './Content';
 import Date from './Date';
-import Img from './Img';
+import Thumbnail from './Thumbnail';
 import Rating from './Rating';
 import PropTypes from 'prop-types';
 import DeleteButton from './DeleteButton';
@@ -11,7 +11,7 @@ export const Post = ({postData}) => {
 
   return (
     <li className={style.post}>
-      <Img postData={postData} />
+      <Thumbnail postData={postData} />
       <Body postData={postData} />
       <Rating ups={ups} />
       <Date date={date} />

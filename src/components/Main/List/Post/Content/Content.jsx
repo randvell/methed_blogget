@@ -26,6 +26,5 @@ export const Content = ({postData}) => {
 };
 
 Content.propTypes = {
-  className: PropTypes.string,
   postData: PropTypes.object,
 };

@@ -3,10 +3,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 8px;
   justify-content: center;
   padding-right: 10px;
-  padding-top: 20px;
+  padding-top: 25px;
 }
 
 .up,
@@ -31,13 +31,6 @@
   background-image: url('./img/down.svg');
 }
 
-.ups {
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 130%;
-  color: #8f8f8f;
-}
-
 @media (min-width: 580px) {
   .rating {
     padding-top: 0;
@@ -45,7 +38,7 @@
     flex-direction: row;
     justify-content: flex-start;
   }
-  
+
   .up,
   .down {
     width: 24px;
@@ -60,9 +53,5 @@
   .up:hover,
   .down:hover {
     outline-color: #cc6633;
-  }
-
-  .ups {
-    font-size: 16px;
   }
 }

@@ -1,14 +1,14 @@
-import {useEffect, useState} from 'react';
-import {useToken} from './useToken';
+import {useContext, useEffect, useState} from 'react';
 import {API_URL} from '../api/const';
+import {tokenContext} from '../context/tokenContext';
 
 export const useAuth = () => {
-  const [token, setToken] = useToken('');
+  const {token, revokeToken} = useContext(tokenContext);
   const [auth, setAuth] = useState({});
 
   const unAuth = () => {
-    setAuth({});
-    setToken('');
+    setAuth();
+    revokeToken();
   };
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export const useAuth = () => {
     })
       .then((response) => {
         if (response.status === 401) {
-          setToken('');
+          revokeToken();
           throw new Error('Unauthorized');
         }
 
@@ -35,7 +35,7 @@ export const useAuth = () => {
       })
       .catch((err) => {
         console.log(err);
-        setAuth({});
+        setAuth();
       });
   }, [token]);
 

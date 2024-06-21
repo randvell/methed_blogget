@@ -20,15 +20,14 @@
   justify-content: space-between;
   gap: 10px;
   background-color: var(--white);
-
 }
 
 .btn:hover {
   background-color: var(--greyE6);
 }
 
-.btn:hover svg{
-  color: var(--orange)
+.btn:hover svg {
+  color: var(--orange);
 }
 
 .list {
@@ -50,7 +49,6 @@
 .item:last-child {
   border-bottom: 0;
 }
-
 
 @media (min-width: 768px) {
   .container {

@@ -11,7 +11,7 @@
   border: 0;
   background-color: transparent;
   color: var(--grey99);
-  transition: color 0.36s ease-in-out;
+  transition: color .36s ease-in-out;
   outline: 2px solid transparent;
   border-radius: 6px;
 }
@@ -21,7 +21,7 @@
 }
 
 .delete:focus {
-  outline-color: var(--black);
+  outline-color:var(--black);
 }
 
 .delete:active {
