@@ -1,13 +1,24 @@
+import {useState} from 'react';
+
 import style from './Content.module.css';
 import PropTypes from 'prop-types';
 import Text from '../../../../../UI/Text';
+import Modal from '../../../../Modal';
 
 export const Content = ({title, author}) => {
-  console.log();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className={style.content}>
       <Text As="h2" className={style.title}>
-        <Text As="a" size={18} tsize={24} className={style.linkPost} href="#">
+        <Text
+          As="a"
+          size={18}
+          tsize={24}
+          className={style.linkPost}
+          href="#post"
+          onClick={() => setIsModalOpen(true)}
+        >
           {title}
         </Text>
       </Text>
@@ -20,6 +31,7 @@ export const Content = ({title, author}) => {
       >
         {author}
       </Text>
+      {isModalOpen && <Modal />}
     </div>
   );
 };

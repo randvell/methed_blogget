@@ -34,7 +34,7 @@ export const useAuth = () => {
         setAuth({name, img});
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         setAuth();
       });
   }, [token]);
