@@ -2,9 +2,8 @@ import style from './Content.module.css';
 import PropTypes from 'prop-types';
 import Text from '../../../../../UI/Text';
 
-export const Content = ({postData}) => {
-  const {title, author} = postData;
-
+export const Content = ({title, author}) => {
+  console.log();
   return (
     <div className={style.content}>
       <Text As="h2" className={style.title}>
@@ -26,5 +25,6 @@ export const Content = ({postData}) => {
 };
 
 Content.propTypes = {
-  postData: PropTypes.object,
+  title: PropTypes.string,
+  author: PropTypes.string,
 };

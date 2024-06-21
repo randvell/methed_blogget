@@ -1,5 +1,5 @@
 import style from './Post.module.css';
-import Body from './Content';
+import Content from './Content';
 import Date from './Date';
 import Thumbnail from './Thumbnail';
 import Rating from './Rating';
@@ -7,14 +7,14 @@ import PropTypes from 'prop-types';
 import DeleteButton from './DeleteButton';
 
 export const Post = ({postData}) => {
-  const {ups, date} = postData;
+  const {ups, createdAt, title, author, thumbnail} = postData;
 
   return (
     <li className={style.post}>
-      <Thumbnail postData={postData} />
-      <Body postData={postData} />
+      <Thumbnail title={title} thumbnail={thumbnail} />
+      <Content title={title} author={author} />
       <Rating ups={ups} />
-      <Date date={date} />
+      <Date timestamp={createdAt} />
       <DeleteButton />
     </li>
   );

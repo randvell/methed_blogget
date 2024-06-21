@@ -2,12 +2,16 @@ import formatDate from '../../../../../utils/formatDate';
 import PropTypes from 'prop-types';
 import style from './Date.module.css';
 
-export const Date = ({date}) => (
-  <time className={style.date} dateTime={date}>
-    {formatDate(date)}
-  </time>
-);
+export const DateComponent = ({timestamp}) => {
+  const date = new Date(timestamp * 1000);
 
-Date.propTypes = {
-  date: PropTypes.string,
+  return (
+    <time className={style.date} dateTime={date.toISOString()}>
+      {formatDate(date)}
+    </time>
+  );
+};
+
+DateComponent.propTypes = {
+  timestamp: PropTypes.number,
 };
