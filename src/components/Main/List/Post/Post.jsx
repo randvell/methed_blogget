@@ -4,16 +4,18 @@ import Date from './Date';
 import Img from './Img';
 import Rating from './Rating';
 import PropTypes from 'prop-types';
+import DeleteButton from './DeleteButton';
 
 export const Post = ({postData}) => {
   const {ups, date} = postData;
 
   return (
     <li className={style.post}>
-      <Img className={style.img} postData={postData} />
-      <Body className={style.content} postData={postData} />
-      <Rating className={style.rating} ups={ups} />
-      <Date className={style.date} date={date} />
+      <Img postData={postData} />
+      <Body postData={postData} />
+      <Rating ups={ups} />
+      <Date date={date} />
+      <DeleteButton />
     </li>
   );
 };

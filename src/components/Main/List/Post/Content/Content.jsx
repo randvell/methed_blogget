@@ -1,13 +1,12 @@
-import DeleteButton from './DeleteButton';
 import style from './Content.module.css';
 import PropTypes from 'prop-types';
 import Text from '../../../../../UI/Text';
 
-export const Content = ({className, postData}) => {
+export const Content = ({postData}) => {
   const {title, author} = postData;
 
   return (
-    <div className={className}>
+    <div className={style.content}>
       <Text As="h2" className={style.title}>
         <Text As="a" size={18} tsize={24} className={style.linkPost} href="#">
           {title}
@@ -22,7 +21,6 @@ export const Content = ({className, postData}) => {
       >
         {author}
       </Text>
-      <DeleteButton />
     </div>
   );
 };

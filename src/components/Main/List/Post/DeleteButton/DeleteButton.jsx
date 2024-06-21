@@ -1,4 +1,4 @@
-import InlineSvg from '../../../../../../UI/InlineSvg';
+import InlineSvg from '../../../../../UI/InlineSvg';
 import style from './DeleteButton.module.css';
 
 export const DeleteButton = () => {
