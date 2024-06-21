@@ -16,6 +16,7 @@ const LIST = [
 ].map(assignRandomId);
 
 export const Tabs = () => {
+  const [topMenuText, setTopMenuText] = useState('Open');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdown, setIsDropdown] = useState(true);
 
@@ -25,6 +26,12 @@ export const Tabs = () => {
     } else {
       setIsDropdown(false);
     }
+  };
+
+  const handleMenuSelect = (id) => {
+    setIsDropdownOpen(false);
+    const element = LIST.find((item) => item.id === id);
+    setTopMenuText(element.value);
   };
 
   useEffect(() => {
@@ -44,7 +51,7 @@ export const Tabs = () => {
             className={style.btn}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            {isDropdownOpen ? 'Close' : 'Open'}
+            {topMenuText}
             <ArrowIcon width={15} height={15} />
           </button>
         </div>
@@ -54,7 +61,10 @@ export const Tabs = () => {
         <ul className={style.list} onClick={() => setIsDropdownOpen(false)}>
           {LIST.map(({id, value, Icon}) => (
             <li className={style.item} key={id}>
-              <button className={style.btn}>
+              <button
+                className={style.btn}
+                onClick={() => handleMenuSelect(id)}
+              >
                 {value}
                 {Icon && <Icon width={30} height={30} />}
               </button>
