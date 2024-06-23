@@ -7,12 +7,12 @@ import PropTypes from 'prop-types';
 import DeleteButton from './DeleteButton';
 
 export const Post = ({postData}) => {
-  const {ups, createdAt, title, author, thumbnail} = postData;
+  const {id, ups, createdAt, title, author, thumbnail, markdown} = postData;
 
   return (
     <li className={style.post}>
       <Thumbnail title={title} thumbnail={thumbnail} />
-      <Content title={title} author={author} />
+      <Content id={id} title={title} author={author} markdown={markdown} />
       <Rating ups={ups} />
       <Date timestamp={createdAt} />
       <DeleteButton />

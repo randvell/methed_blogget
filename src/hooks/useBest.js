@@ -20,6 +20,7 @@ export const useBest = () => {
         ups: data.score,
         title: data.title,
         thumbnail: isImageUrl(data.thumbnail) ? data.thumbnail : null,
+        markdown: data.selftext,
       })) || [];
 
     setBest(preparedPosts);

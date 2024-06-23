@@ -15,6 +15,7 @@ export const Text = (props) => {
     center,
     medium,
     bold,
+    onClick,
   } = props;
 
   const classes = classNames(
@@ -29,7 +30,7 @@ export const Text = (props) => {
   );
 
   return (
-    <As className={classes} href={href}>
+    <As className={classes} href={href} onClick={onClick}>
       {children}
     </As>
   );
@@ -44,6 +45,7 @@ Text.propTypes = {
   className: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.string,
+    PropTypes.number,
     PropTypes.object,
     PropTypes.array,
   ]),
@@ -51,4 +53,5 @@ Text.propTypes = {
   center: PropTypes.bool,
   medium: PropTypes.bool,
   bold: PropTypes.bool,
+  onClick: PropTypes.func,
 };

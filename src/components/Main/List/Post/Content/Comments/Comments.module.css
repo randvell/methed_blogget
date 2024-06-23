@@ -1,0 +1,9 @@
+.list {
+  padding: 15px 0;
+}
+
+@media (min-width: 768px) {
+  .list {
+    padding: 30px 0;
+  }
+}

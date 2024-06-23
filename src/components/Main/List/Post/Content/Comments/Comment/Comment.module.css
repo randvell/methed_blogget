@@ -1,0 +1,17 @@
+.item {
+  margin-bottom: 20px;
+}
+
+.author {
+  margin-bottom: 10px;
+}
+
+.comment {
+  white-space: pre-line;
+}
+
+@media (min-width: 768px) {
+  .item {
+    margin-bottom: 30px;
+  }
+}
