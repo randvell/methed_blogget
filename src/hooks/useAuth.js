@@ -1,14 +1,17 @@
-import {useContext, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {API_URL} from '../api/const';
-import {tokenContext} from '../context/tokenContext';
+import {useDispatch, useSelector} from 'react-redux';
+import {deleteToken} from '../store';
 
 export const useAuth = () => {
-  const {token, revokeToken} = useContext(tokenContext);
+  const token = useSelector((state) => state.token);
+  const dispatch = useDispatch();
+
   const [auth, setAuth] = useState({});
 
   const unAuth = () => {
     setAuth();
-    revokeToken();
+    dispatch(deleteToken());
   };
 
   useEffect(() => {
@@ -23,7 +26,7 @@ export const useAuth = () => {
     })
       .then((response) => {
         if (response.status === 401) {
-          revokeToken();
+          dispatch(deleteToken());
           throw new Error('Unauthorized');
         }
 
