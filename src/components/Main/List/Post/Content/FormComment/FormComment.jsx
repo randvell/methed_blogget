@@ -3,9 +3,10 @@ import {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Text from '../../../../../../UI/Text';
 import {updateComment} from '../../../../../../store/form/action';
+import {useAuth} from '../../../../../../hooks/useAuth';
 
 export const FormComment = () => {
-  const {auth} = useSelector((state) => state.auth.data);
+  const {auth} = useAuth();
 
   const value = useSelector((state) => state.comment.comment);
   const dispatch = useDispatch();
