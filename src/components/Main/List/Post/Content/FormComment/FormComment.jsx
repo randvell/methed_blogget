@@ -1,16 +1,16 @@
 import style from './FormComment.module.css';
-import {useAuth} from '../../../../../../hooks/useAuth';
 import {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Text from '../../../../../../UI/Text';
-import {updateComment} from '../../../../../../store';
+import {updateComment} from '../../../../../../store/form/action';
 
 export const FormComment = () => {
-  const value = useSelector((state) => state.comment);
+  const {auth} = useSelector((state) => state.auth.data);
+
+  const value = useSelector((state) => state.comment.comment);
   const dispatch = useDispatch();
 
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const {auth} = useAuth();
   const commentRef = useRef();
 
   const handleButtonClick = () => {

@@ -1,11 +1,18 @@
+import Preloader from '../../../../../../UI/Preloader';
 import Text from '../../../../../../UI/Text';
+import {useCommentsData} from '../../../../../../hooks/useCommentsData';
 import {Comment} from './Comment/Comment';
 import style from './Comments.module.css';
 import PropTypes from 'prop-types';
 
-export const Comments = ({comments}) => {
-  if (!comments) {
-    return <Text As="h3">Загрузка комментариев...</Text>;
+export const Comments = ({id}) => {
+  const {comments, loading, error} = useCommentsData(id);
+
+  if (loading) {
+    return <Preloader />;
+  }
+  if (error) {
+    return <Text As="h3">Ошибка при загрузке</Text>;
   }
 
   return (
@@ -24,5 +31,5 @@ export const Comments = ({comments}) => {
 };
 
 Comments.propTypes = {
-  comments: PropTypes.array,
+  id: PropTypes.string,
 };

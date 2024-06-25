@@ -1,54 +1,22 @@
-import {useEffect, useState} from 'react';
-import {API_URL} from '../api/const';
+import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {deleteToken} from '../store';
+import {commentsRequestAsync} from '../store/comments/action';
 
 export const useCommentsData = (articleId) => {
-  const token = useSelector((state) => state.token);
-  const dispatch = useDispatch();
-  const [comments, setComments] = useState();
+  const token = useSelector((state) => state.token.token);
+  const comments = useSelector((state) => state.comments.data);
+  const loading = useSelector((state) => state.comments.loading);
+  const error = useSelector((state) => state.comments.error);
 
-  const prepareComments = (commentsData) =>
-    commentsData.map(({data: comment}) => ({
-      id: comment.id,
-      author: comment.author,
-      body: comment.body,
-      createdAt: comment.created,
-      ups: comment.score,
-    }));
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!token || !articleId) {
       return;
     }
 
-    fetch(`${API_URL}/comments/${articleId}`, {
-      headers: {
-        Authorization: `bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        if (response.status === 401) {
-          dispatch(deleteToken());
-          throw new Error('Unauthorized');
-        }
-
-        return response.json();
-      })
-      .then((result) => {
-        const commentsData = result?.[1]?.data?.children;
-
-        if (commentsData === undefined) {
-          console.log(result);
-          throw new Error('Не удалось загрузить комментарии');
-        }
-
-        setComments(prepareComments(commentsData));
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    dispatch(commentsRequestAsync(articleId));
   }, [token, articleId]);
 
-  return {comments};
+  return {comments, loading, error};
 };

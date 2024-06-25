@@ -7,11 +7,8 @@ import Text from '../../UI/Text';
 import {useEffect, useRef} from 'react';
 import Comments from '../Main/List/Post/Content/Comments';
 import FormComment from '../Main/List/Post/Content/FormComment';
-import {useCommentsData} from '../../hooks/useCommentsData';
 
 export const Modal = ({id, title, author, markdown, closeModal}) => {
-  const {comments} = useCommentsData(id);
-
   const overlayRef = useRef(null);
   const handleClick = (e) => {
     const target = e.target;
@@ -34,14 +31,6 @@ export const Modal = ({id, title, author, markdown, closeModal}) => {
       document.removeEventListener('keydown', handleEsc);
     };
   }, []);
-
-  useEffect(() => {
-    console.log('Modal props:', {id, title, author, markdown, closeModal});
-  }, [id, title, author, markdown, closeModal]);
-
-  useEffect(() => {
-    console.log('Comments:', comments);
-  }, [comments]);
 
   return ReactDOM.createPortal(
     <div className={style.overlay} ref={overlayRef}>
@@ -69,7 +58,7 @@ export const Modal = ({id, title, author, markdown, closeModal}) => {
         </Text>
 
         <FormComment />
-        <Comments comments={comments} />
+        <Comments id={id} />
 
         <button className={style.close} onClick={closeModal}>
           <CloseSvg />

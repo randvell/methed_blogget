@@ -1,18 +1,20 @@
-import {Provider} from 'react-redux';
-import {store} from './store';
-
+import {useDispatch} from 'react-redux';
 import Header from './components/Header';
 import Main from './components/Main';
-import {AuthContextProvider} from './context/authContext';
+import {getToken} from './api/token';
+import {updateToken} from './store/token/action';
+import ToastPortal from './UI/ToastPortal';
 
 function App() {
+  const dispatch = useDispatch();
+  dispatch(updateToken(getToken()));
+
   return (
-    <Provider store={store}>
-      <AuthContextProvider>
-        <Header />
-        <Main />
-      </AuthContextProvider>
-    </Provider>
+    <>
+      <Header />
+      <Main />
+      <ToastPortal />
+    </>
   );
 }
 
