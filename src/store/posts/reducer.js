@@ -13,6 +13,7 @@ const initialState = {
   error: '',
   after: '',
   isLast: false,
+  loadCount: 0,
 };
 
 export const postsReducer = (state = initialState, action) => {
@@ -30,6 +31,7 @@ export const postsReducer = (state = initialState, action) => {
         data: action.data,
         after: action.after,
         isLast: !action.after,
+        loadCount: 1,
       };
     case POSTS_REQUEST_SUCCESS_AFTER:
       return {
@@ -38,6 +40,7 @@ export const postsReducer = (state = initialState, action) => {
         data: [...state.data, ...action.data],
         after: action.after,
         isLast: !action.after,
+        loadCount: state.loadCount + 1,
       };
     case POSTS_REQUEST_ERROR:
       return {
@@ -52,6 +55,7 @@ export const postsReducer = (state = initialState, action) => {
         page: action.page,
         after: '',
         isLast: false,
+        loadCount: 0,
       };
     default:
       return state;

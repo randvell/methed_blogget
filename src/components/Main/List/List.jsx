@@ -11,7 +11,7 @@ import {Outlet, useParams} from 'react-router-dom';
 
 export const List = () => {
   const {page} = useParams();
-  const {posts, loading, error} = usePosts();
+  const {posts, loading, error, isLocked} = usePosts();
   const {auth, loading: authLoading} = useAuth();
   const endList = useRef(null);
   const dispatch = useDispatch();
@@ -20,11 +20,13 @@ export const List = () => {
     dispatch(postsRequestAsync(page));
   }, [page]);
 
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (!loading && entries[0].isIntersecting) {
+        if (!isLocked && !loading && entries[0].isIntersecting) {
           dispatch(postsRequestAsync());
+          console.log('counter++');
         }
       },
       {
@@ -63,6 +65,16 @@ export const List = () => {
         {loading && <Preloader />}
         <li ref={endList} className={style.end}></li>
       </ul>
+      {isLocked && (
+        <Text
+          As="button"
+          onClick={() => {
+            dispatch(postsRequestAsync(page));
+          }}
+        >
+          Загрузить еще
+        </Text>
+      )}
       <Outlet />
     </>
   );

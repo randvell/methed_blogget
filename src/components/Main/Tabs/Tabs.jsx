@@ -20,8 +20,6 @@ const LIST = [
 export const Tabs = () => {
   const {page} = useParams();
   const currentPage = LIST.find(({link}) => link === page);
-  console.log(page);
-  console.log(currentPage);
 
   const [topMenuText, setTopMenuText] = useState(
     currentPage?.value || 'Главная'
