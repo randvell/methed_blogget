@@ -3,6 +3,7 @@ import {API_URL} from '../../api/const';
 
 export const POSTS_REQUEST = 'POSTS_REQUEST';
 export const POSTS_REQUEST_SUCCESS = 'POSTS_REQUEST_SUCCESS';
+export const POSTS_REQUEST_SUCCESS_AFTER = 'POSTS_REQUEST_SUCCESS_AFTER';
 export const POSTS_REQUEST_ERROR = 'POSTS_REQUEST_ERROR';
 
 export const postsRequest = () => ({
@@ -29,9 +30,16 @@ const processPosts = (postsData) => {
   return preparedPosts;
 };
 
-export const postsRequestSuccess = ({data}) => ({
+export const postsRequestSuccess = ({data, after}) => ({
   type: POSTS_REQUEST_SUCCESS,
   data: processPosts(data),
+  after,
+});
+
+export const postsRequestSuccessAfter = ({data, after}) => ({
+  type: POSTS_REQUEST_SUCCESS_AFTER,
+  data: processPosts(data),
+  after,
 });
 
 export const postsRequestError = (err) => ({
@@ -41,13 +49,16 @@ export const postsRequestError = (err) => ({
 
 export const postsRequestAsync = () => (dispatch, getState) => {
   const token = getState().token.token;
-  if (!token) {
+  const loading = getState().posts.loading;
+  const after = getState().posts.after;
+  const isLast = getState().posts.isLast;
+
+  if (!token || loading || isLast === true) {
     return;
   }
 
   dispatch(postsRequest());
-
-  axios(`${API_URL}/best`, {
+  axios(`${API_URL}/best?limit=10${after ? `&after=${after}` : ''}`, {
     headers: {
       Authorization: `bearer ${token}`,
     },
@@ -55,11 +66,16 @@ export const postsRequestAsync = () => (dispatch, getState) => {
     .then(
       ({
         data: {
-          data: {children},
+          data: {after: postsAfter, children},
         },
       }) => {
         const posts = children || [];
-        dispatch(postsRequestSuccess({data: posts}));
+
+        if (after) {
+          dispatch(postsRequestSuccessAfter({data: posts, after: postsAfter}));
+        } else {
+          dispatch(postsRequestSuccess({data: posts, after: postsAfter}));
+        }
       }
     )
     .catch((err) => {
