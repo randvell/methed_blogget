@@ -1,18 +1,24 @@
 import style from './List.module.css';
 import Post from './Post';
-import {useBest} from '../../../hooks/useBest';
+import {usePosts} from '../../../hooks/usePosts';
 import {useAuth} from '../../../hooks/useAuth';
 import Text from '../../../UI/Text';
 import Preloader from '../../../UI/Preloader';
 import {useEffect, useRef} from 'react';
 import {useDispatch} from 'react-redux';
 import {postsRequestAsync} from '../../../store/posts/action';
+import {Outlet, useParams} from 'react-router-dom';
 
 export const List = () => {
-  const {posts, loading, error} = useBest();
+  const {page} = useParams();
+  const {posts, loading, error} = usePosts();
   const {auth, loading: authLoading} = useAuth();
   const endList = useRef(null);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(postsRequestAsync(page));
+  }, [page]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -30,6 +36,12 @@ export const List = () => {
     if (endListCurrent) {
       observer.observe(endListCurrent);
     }
+
+    return () => {
+      if (endList.current) {
+        observer.unobserve(endList.current);
+      }
+    };
   }, [endList.current, loading]);
 
   if (error) {
@@ -43,12 +55,15 @@ export const List = () => {
   }
 
   return (
-    <ul className={style.list}>
-      {posts.map((postData) => (
-        <Post key={postData.id} postData={postData} />
-      ))}
-      {loading && <Preloader />}
-      <li ref={endList} className={style.end}></li>
-    </ul>
+    <>
+      <ul className={style.list}>
+        {posts.map((postData) => (
+          <Post key={postData.id} postData={postData} />
+        ))}
+        {loading && <Preloader />}
+        <li ref={endList} className={style.end}></li>
+      </ul>
+      <Outlet />
+    </>
   );
 };

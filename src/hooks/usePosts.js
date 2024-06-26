@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {postsRequestAsync} from '../store/posts/action';
 
-export const useBest = () => {
+export const usePosts = (page) => {
   const token = useSelector((state) => state.token.token);
   const posts = useSelector((state) => state.posts.data);
   const loading = useSelector((state) => state.posts.loading);
@@ -16,7 +16,7 @@ export const useBest = () => {
     }
 
     dispatch(postsRequestAsync());
-  }, [token]);
+  }, [token, page]);
 
   return {posts, loading, error};
 };

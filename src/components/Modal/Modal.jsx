@@ -7,8 +7,22 @@ import Text from '../../UI/Text';
 import {useEffect, useRef} from 'react';
 import Comments from '../Main/List/Post/Content/Comments';
 import FormComment from '../Main/List/Post/Content/FormComment';
+import {useNavigate, useParams} from 'react-router-dom';
+import {usePosts} from '../../hooks/usePosts';
+import Preloader from '../../UI/Preloader';
 
-export const Modal = ({id, title, author, markdown, closeModal}) => {
+export const Modal = () => {
+  const navigate = useNavigate();
+  const {id, page} = useParams();
+  const {posts, loading} = usePosts();
+
+  const post = posts.find((post) => post.id === id) || {};
+  const {title, markdown, author} = post;
+
+  const closeModal = () => {
+    navigate(`/category/${page}/`);
+  };
+
   const overlayRef = useRef(null);
   const handleClick = (e) => {
     const target = e.target;
@@ -35,34 +49,42 @@ export const Modal = ({id, title, author, markdown, closeModal}) => {
   return ReactDOM.createPortal(
     <div className={style.overlay} ref={overlayRef}>
       <div className={style.modal}>
-        <Text As="h2" className={style.title}>
-          {title}
-        </Text>
-        <div className={style.content}>
-          <Markdown
-            options={{
-              overrides: {
-                a: {
-                  props: {
-                    target: '_blank',
+        {loading ? (
+          <Preloader />
+        ) : (
+          <>
+            <Text As="h2" className={style.title}>
+              {title}
+            </Text>
+            <div className={style.content}>
+              <Markdown
+                options={{
+                  overrides: {
+                    a: {
+                      props: {
+                        target: '_blank',
+                      },
+                    },
                   },
-                },
-              },
-            }}
-          >
-            {markdown || 'no text content'}
-          </Markdown>
-        </div>
-        <Text As="p" className={style.author}>
-          {author}
-        </Text>
+                }}
+              >
+                {markdown || 'no text content'}
+              </Markdown>
+            </div>
+            <Text As="p" className={style.author}>
+              {author}
+            </Text>
 
-        <FormComment />
-        <Comments id={id} />
+            <FormComment />
+            <Comments />
+          </>
+        )}
 
-        <button className={style.close} onClick={closeModal}>
-          <CloseSvg />
-        </button>
+        {
+          <button className={style.close} onClick={closeModal}>
+            <CloseSvg />
+          </button>
+        }
       </div>
     </div>,
     document.getElementById('modal-root')

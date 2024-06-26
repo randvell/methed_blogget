@@ -20,7 +20,6 @@ export const FormComment = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Комментарий: ' + commentRef.current.value);
     commentRef.current.value = '';
     setIsFormVisible(false);
   };

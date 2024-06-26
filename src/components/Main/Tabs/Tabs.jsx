@@ -7,18 +7,29 @@ import {ReactComponent as HomeIcon} from './img/home.svg';
 import {ReactComponent as TopIcon} from './img/top.svg';
 import {ReactComponent as BestIcon} from './img/best.svg';
 import {ReactComponent as HotIcon} from './img/hot.svg';
+import {useNavigate, useParams} from 'react-router-dom';
+import Text from '../../../UI/Text';
 
 const LIST = [
-  {value: 'Главная', href: '/', Icon: HomeIcon},
-  {value: 'Топ', href: '/', Icon: TopIcon},
-  {value: 'Лучшие', href: '/', Icon: BestIcon},
-  {value: 'Горячие', href: '/', Icon: HotIcon},
+  {value: 'Главная', Icon: HomeIcon, link: ''},
+  {value: 'Топ', Icon: TopIcon, link: 'top'},
+  {value: 'Лучшие', Icon: BestIcon, link: 'best'},
+  {value: 'Горячие', Icon: HotIcon, link: 'hot'},
 ].map(assignRandomId);
 
 export const Tabs = () => {
-  const [topMenuText, setTopMenuText] = useState('Open');
+  const {page} = useParams();
+  const currentPage = LIST.find(({link}) => link === page);
+  console.log(page);
+  console.log(currentPage);
+
+  const [topMenuText, setTopMenuText] = useState(
+    currentPage?.value || 'Главная'
+  );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdown, setIsDropdown] = useState(true);
+
+  const navigate = useNavigate();
 
   const handleResize = () => {
     if (document.documentElement.clientWidth < 768) {
@@ -28,10 +39,9 @@ export const Tabs = () => {
     }
   };
 
-  const handleMenuSelect = (id) => {
+  const handleMenuSelect = (value) => {
     setIsDropdownOpen(false);
-    const element = LIST.find((item) => item.id === id);
-    setTopMenuText(element.value);
+    setTopMenuText(value);
   };
 
   useEffect(() => {
@@ -59,15 +69,19 @@ export const Tabs = () => {
 
       {(!isDropdown || isDropdownOpen) && (
         <ul className={style.list} onClick={() => setIsDropdownOpen(false)}>
-          {LIST.map(({id, value, Icon}) => (
+          {LIST.map(({id, value, Icon, link}) => (
             <li className={style.item} key={id}>
-              <button
+              <Text
+                As="button"
                 className={style.btn}
-                onClick={() => handleMenuSelect(id)}
+                onClick={() => {
+                  handleMenuSelect(value);
+                  navigate(link ? `/category/${link}` : '/');
+                }}
               >
                 {value}
                 {Icon && <Icon width={30} height={30} />}
-              </button>
+              </Text>
             </li>
           ))}
         </ul>

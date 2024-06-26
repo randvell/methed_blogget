@@ -7,7 +7,6 @@ import ReactDOM from 'react-dom';
 
 export const ToastPortal = () => {
   const {toasts, deleteToast} = useToast();
-  console.log(toasts);
 
   return ReactDOM.createPortal(
     <div className={style.container}>

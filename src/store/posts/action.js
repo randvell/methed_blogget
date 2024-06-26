@@ -5,6 +5,7 @@ export const POSTS_REQUEST = 'POSTS_REQUEST';
 export const POSTS_REQUEST_SUCCESS = 'POSTS_REQUEST_SUCCESS';
 export const POSTS_REQUEST_SUCCESS_AFTER = 'POSTS_REQUEST_SUCCESS_AFTER';
 export const POSTS_REQUEST_ERROR = 'POSTS_REQUEST_ERROR';
+export const CHANGE_PAGE = 'CHANGE_PAGE';
 
 export const postsRequest = () => ({
   type: POSTS_REQUEST,
@@ -47,7 +48,18 @@ export const postsRequestError = (err) => ({
   error: err,
 });
 
-export const postsRequestAsync = () => (dispatch, getState) => {
+export const changePage = (page) => ({
+  type: CHANGE_PAGE,
+  page,
+});
+
+export const postsRequestAsync = (newPage) => (dispatch, getState) => {
+  let page = getState().posts.page;
+  if (newPage && page !== newPage) {
+    page = newPage;
+    dispatch(changePage(newPage));
+  }
+
   const token = getState().token.token;
   const loading = getState().posts.loading;
   const after = getState().posts.after;
@@ -58,7 +70,7 @@ export const postsRequestAsync = () => (dispatch, getState) => {
   }
 
   dispatch(postsRequest());
-  axios(`${API_URL}/best?limit=10${after ? `&after=${after}` : ''}`, {
+  axios(`${API_URL}/${page}?limit=10${after ? `&after=${after}` : ''}`, {
     headers: {
       Authorization: `bearer ${token}`,
     },
