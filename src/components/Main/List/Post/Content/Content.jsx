@@ -10,20 +10,12 @@ export const Content = ({id, title, author}) => {
     <div className={style.content}>
       <Text As="h2" className={style.title}>
         <Link className={style.linkPost} to={`/category/${page}/post/${id}`}>
-          <Text As="a" size={14} tsize={22} className={style.linkPost}>
-            {title}
-          </Text>
+          {title}
         </Link>
       </Text>
-      <Text
-        As="a"
-        size={12}
-        tsize={14}
-        className={style.linkAuthor}
-        href="#author"
-      >
+      <a className={`${style.linkAuthor} ${style.text}`} href="#author">
         {author}
-      </Text>
+      </a>
     </div>
   );
 };

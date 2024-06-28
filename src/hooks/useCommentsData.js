@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {commentsRequestAsync} from '../store/comments/action';
+import {commentsRequestAsync} from '../store/comments/commentsAction';
 
 export const useCommentsData = (articleId) => {
   const token = useSelector((state) => state.token.token);

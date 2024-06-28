@@ -6,7 +6,7 @@ import Text from '../../../UI/Text';
 import Preloader from '../../../UI/Preloader';
 import {useEffect, useRef} from 'react';
 import {useDispatch} from 'react-redux';
-import {postsRequestAsync} from '../../../store/posts/action';
+import {postsRequestAsync} from '../../../store/posts/postsAction';
 import {Outlet, useParams} from 'react-router-dom';
 
 export const List = () => {
@@ -18,14 +18,13 @@ export const List = () => {
 
   useEffect(() => {
     dispatch(postsRequestAsync(page));
-  }, [page]);
-
+  }, [page, dispatch]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (!isLocked && !loading && entries[0].isIntersecting) {
-          dispatch(postsRequestAsync());
+          dispatch(postsRequestAsync(page));
           console.log('counter++');
         }
       },
@@ -40,11 +39,11 @@ export const List = () => {
     }
 
     return () => {
-      if (endList.current) {
-        observer.unobserve(endList.current);
+      if (endListCurrent) {
+        observer.unobserve(endListCurrent);
       }
     };
-  }, [endList.current, loading]);
+  }, [dispatch, isLocked, loading, page]);
 
   if (error) {
     return <Text As="h3">Ошибка при загрузке</Text>;
@@ -52,7 +51,7 @@ export const List = () => {
   if (!authLoading && !auth.name) {
     return <Text As="h3">Необходимо авторизоваться для просмотра постов</Text>;
   }
-  if (!loading && !posts && !posts.length) {
+  if (!loading && (!posts || !posts.length)) {
     return <Text As="h3">Отсутствуют новые публикации</Text>;
   }
 
