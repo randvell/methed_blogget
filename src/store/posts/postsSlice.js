@@ -11,11 +11,13 @@ const initialState = {
   loadCount: 0,
 };
 
-const processPosts = (postsData) => {
+export const processPosts = (postsData) => {
   function isImageUrl(url) {
     const imageRegex = /\.(jpeg|jpg|gif|png|bmp|webp)$/i;
     return imageRegex.test(url);
   }
+
+  console.log(postsData);
 
   const preparedPosts =
     postsData?.map(({data}) => ({
