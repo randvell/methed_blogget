@@ -17,7 +17,6 @@ function* workerSearch(action) {
   const token = yield select((state) => state.token.token);
   const {data} = yield call(fetchSearch, action.search, token);
 
-  console.log(data);
   yield put(searchRequestSuccess({data: data.children, after: data.after}));
 }
 

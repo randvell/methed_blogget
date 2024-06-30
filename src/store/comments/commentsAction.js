@@ -1,25 +1,6 @@
-import axios from 'axios';
-import {API_URL} from '../../api/const';
-import {createAsyncThunk} from '@reduxjs/toolkit';
+import {createAction} from '@reduxjs/toolkit';
 
-export const commentsRequestAsync = createAsyncThunk(
-  'comments/fetch',
-  (articleId, {getState}) => {
-    const token = getState().token.token;
-    if (!token) {
-      return;
-    }
-
-    return axios(`${API_URL}/comments/${articleId}`, {
-      headers: {
-        Authorization: `bearer ${token}`,
-      },
-    })
-      .then(({data}) => {
-        const children = data?.[1]?.data?.children;
-        const posts = children || [];
-        return {data: posts};
-      })
-      .catch((err) => ({error: err.toString()}));
-  }
-);
+export const commentsRequest = createAction('comments/fetch');
+export const commentsRequestPending = createAction('comments/fetchPending');
+export const commentsRequestSuccess = createAction('comments/fetchSuccess');
+export const commentsRequestFailure = createAction('comments/fetchFailure');

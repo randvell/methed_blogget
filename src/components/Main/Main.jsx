@@ -6,6 +6,7 @@ import List from './List';
 import Modal from '../Modal';
 import Home from './Home';
 import Page404 from './Page404';
+import AuthRedirect from './AuthRedirect';
 
 export const Main = () => (
   <main className={style.main}>
@@ -31,6 +32,7 @@ export const Main = () => (
         >
           <Route path="post/:id/" element={<Modal />} />
         </Route>
+        <Route path="/auth" element={<AuthRedirect />} />
         <Route path="*" element={<Page404 />} />
       </Routes>
     </Layout>

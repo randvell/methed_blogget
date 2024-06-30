@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {commentsRequestAsync} from '../store/comments/commentsAction';
+import {commentsRequest} from '../store/comments/commentsAction';
 
 export const useCommentsData = (articleId) => {
   const token = useSelector((state) => state.token.token);
@@ -15,8 +15,8 @@ export const useCommentsData = (articleId) => {
       return;
     }
 
-    dispatch(commentsRequestAsync(articleId));
-  }, [token, articleId]);
+    dispatch(commentsRequest(articleId));
+  }, [token, articleId, dispatch]);
 
   return {comments, loading, error};
 };

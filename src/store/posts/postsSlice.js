@@ -1,5 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {postsRequestAsync} from './postsAction';
+import {
+  postsRequestSuccess,
+  postsRequestFailure,
+  changePage,
+  postsRequestPending,
+} from './postsAction';
 
 const initialState = {
   loading: false,
@@ -16,8 +21,6 @@ export const processPosts = (postsData) => {
     const imageRegex = /\.(jpeg|jpg|gif|png|bmp|webp)$/i;
     return imageRegex.test(url);
   }
-
-  console.log(postsData);
 
   const preparedPosts =
     postsData?.map(({data}) => ({
@@ -36,22 +39,14 @@ export const processPosts = (postsData) => {
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {
-    changePage: (state, action) => {
-      state.data = [];
-      state.page = action.payload;
-      state.after = '';
-      state.isLast = false;
-      state.loadCount = 0;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(postsRequestAsync.pending, (state) => {
+      .addCase(postsRequestPending, (state) => {
         state.loading = true;
         state.error = '';
       })
-      .addCase(postsRequestAsync.fulfilled, (state, action) => {
+      .addCase(postsRequestSuccess, (state, action) => {
         state.loading = false;
         if (!action.payload) {
           return;
@@ -67,15 +62,22 @@ const postsSlice = createSlice({
           state.data = processPosts(postsData);
           state.loadCount = 1;
         }
+
         state.after = after;
         state.isLast = !after;
       })
-      .addCase(postsRequestAsync.rejected, (state, action) => {
+      .addCase(postsRequestFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to fetch posts';
+      })
+      .addCase(changePage, (state, action) => {
+        state.data = [];
+        state.page = action.payload;
+        state.after = '';
+        state.isLast = false;
+        state.loadCount = 0;
       });
   },
 });
 
-export const {changePage} = postsSlice.actions;
 export default postsSlice.reducer;

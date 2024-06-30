@@ -29,6 +29,7 @@ export const authRevoke = () => ({
 export const authRequestAsync = () => (dispatch, getState) => {
   const token = getState().token.token;
   const loading = getState().auth.loading;
+
   if (!token) {
     return;
   }

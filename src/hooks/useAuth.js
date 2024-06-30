@@ -17,7 +17,9 @@ export const useAuth = () => {
   };
 
   useEffect(() => {
-    dispatch(authRequestAsync());
+    if (!auth?.name) {
+      dispatch(authRequestAsync());
+    }
   }, [token]);
 
   return {auth, unAuth, loading, error};

@@ -6,26 +6,27 @@ import Text from '../../../UI/Text';
 import Preloader from '../../../UI/Preloader';
 import {useEffect, useRef} from 'react';
 import {useDispatch} from 'react-redux';
-import {postsRequestAsync} from '../../../store/posts/postsAction';
+import {postsRequest} from '../../../store/posts/postsAction';
 import {Outlet, useParams} from 'react-router-dom';
 
 export const List = () => {
   const {page} = useParams();
+  const searchParams = new URLSearchParams(location.search);
+  const q = searchParams.get('q');
   const {posts, loading, error, isLocked} = usePosts();
   const {auth, loading: authLoading} = useAuth();
   const endList = useRef(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(postsRequestAsync(page));
-  }, [page, dispatch]);
+    dispatch(postsRequest({page, q}));
+  }, [page, q, dispatch]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (!isLocked && !loading && entries[0].isIntersecting) {
-          dispatch(postsRequestAsync(page));
-          console.log('counter++');
+          dispatch(postsRequest({page, q}));
         }
       },
       {
@@ -43,7 +44,7 @@ export const List = () => {
         observer.unobserve(endListCurrent);
       }
     };
-  }, [dispatch, isLocked, loading, page]);
+  }, [dispatch, isLocked, loading, page, q]);
 
   if (error) {
     return <Text As="h3">Ошибка при загрузке</Text>;
@@ -68,7 +69,7 @@ export const List = () => {
         <Text
           As="button"
           onClick={() => {
-            dispatch(postsRequestAsync(page));
+            dispatch(postsRequest({page, q}));
           }}
         >
           Загрузить еще

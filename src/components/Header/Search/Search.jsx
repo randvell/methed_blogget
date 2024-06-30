@@ -1,17 +1,15 @@
 /* eslint-disable max-len */
-import {useDispatch, useSelector} from 'react-redux';
 import style from './Search.module.css';
 import {useState} from 'react';
-import {searchRequest} from '../../../store/search/searchAction';
+import {useNavigate} from 'react-router-dom';
 
 export const Search = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [search, setSearch] = useState('');
-  const token = useSelector((state) => state.token.token);
 
   const handlerSubmit = (e) => {
     e.preventDefault();
-    dispatch(searchRequest({token, search}));
+    navigate(`/category/search?q=${search}`);
   };
 
   return (

@@ -1,39 +1,31 @@
 import axios from 'axios';
 import {API_URL} from '../../api/const';
-import {createAsyncThunk} from '@reduxjs/toolkit';
-import {changePage} from './postsSlice';
+import {createAction} from '@reduxjs/toolkit';
 
-export const postsRequestAsync = createAsyncThunk(
-  'posts/fetchPosts',
-  (newPage, {getState, rejectWithValue, dispatch}) => {
-    const state = getState();
+export const postsRequest = createAction('posts/fetchPosts');
+export const postsRequestPending = createAction('posts/fetchPostsPending');
+export const postsRequestSuccess = createAction('posts/fetchPostsSuccess');
+export const postsRequestFailure = createAction('posts/fetchPostsFailure');
+export const changePage = createAction('posts/changePage');
 
-    let page = getState().posts.page;
-    if (newPage && page !== newPage) {
-      page = newPage;
-      dispatch(changePage(newPage));
-    }
-
-    const token = state.token.token;
-    const after = state.posts.after;
-    const isLast = state.posts.isLast;
-
-    if (!token || isLast) {
-      return rejectWithValue('Request not allowed');
-    }
-
-    return axios(
-      `${API_URL}/${page}?limit=10${after ? `&after=${after}` : ''}`,
-      {
-        headers: {
-          Authorization: `bearer ${token}`,
-        },
-      }
-    )
-      .then((response) => {
-        const {after: postsAfter, children} = response.data.data;
-        return {data: children || [], after: postsAfter, append: !!after};
-      })
-      .catch((err) => rejectWithValue(err.toString()));
+export const fetchPosts = async (page, token, after, q) => {
+  const isSearch = page === 'search';
+  const params = new URLSearchParams();
+  params.append('limit', '10');
+  if (isSearch) {
+    params.append('q', q);
   }
-);
+  if (after) {
+    params.append('after', after);
+  }
+
+  const url = `${API_URL}/${page}?${params.toString()}`;
+  const response = await axios(url, {
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+  });
+
+  const {after: postsAfter, children} = response.data.data;
+  return {data: children || [], after: postsAfter, append: !!after};
+};
